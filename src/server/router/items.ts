@@ -9,10 +9,13 @@ export const itemsRouter = createRouter()
   })
   .mutation("add", {
     input: z.object({
-      name: z.string(),
+      name: z.string().min(3, "item name must be at least 3 letters"),
+      listId: z.string().min(1),
     }),
     async resolve({ ctx, input }) {
-      return await ctx.prisma.item.create({ data: { name: input.name } });
+      return await ctx.prisma.item.create({
+        data: { name: input.name, listId: parseInt(input.listId) },
+      });
     },
   })
   .mutation("delete", {
