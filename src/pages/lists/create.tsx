@@ -1,7 +1,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { trpc } from "../../utils/trpc";
+
+import { trpc } from "@/utils/trpc";
 
 const schema = z.object({
   name: z.string().min(5, "List name must be at least 5 characters long"),
@@ -45,9 +46,9 @@ export const CreateList: React.FC = () => {
           <span className="text-red-300">{errors.name.message}</span>
         )}
         <input
-          disabled={isLoading}
           type="submit"
           value="CREATE"
+          disabled={isLoading}
           className="mt-2 w-1/3 self-center rounded bg-sky-300 py-1 text-center text-white hover:bg-sky-500 sm:w-full md:w-1/3"
         />
       </form>

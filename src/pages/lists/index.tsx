@@ -1,14 +1,16 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import Layout from "../components/layout";
-import Loading from "../components/loading";
-import { trpc } from "../../utils/trpc";
 import Link from "next/link";
-import { CreateList } from "./createList";
 import {
   ArchiveBoxXMarkIcon,
   ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/solid";
+
+import Loading from "@/components/loading";
+import { trpc } from "@/utils/trpc";
+
+import { CreateList } from "./create";
+import { ListWrapper } from "@/components/list";
 
 interface ListProps {
   id: number;
@@ -89,11 +91,11 @@ const List: React.FC<ListProps> = ({ id, name, active, itemsCount }) => {
   const loading = isEnabling || isDisabling;
 
   return (
-    <div className="flex justify-between bg-white p-4">
+    <div className="flex justify-between py-2">
       <Link href={`/lists/${id}`}>
         <a>{name}</a>
       </Link>
-      <div className="flex flex-row">
+      <div className="flex-end flex flex-row">
         <span className="flex flex-row">{itemsCount}</span>
         <button
           className="ml-2"
@@ -118,34 +120,32 @@ const Lists: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            <h2 className="mb-4">Here are your lists</h2>
-            <div className="divide-y rounded border p-4 text-center sm:w-full lg:w-1/2">
-              {lists?.length === 0 && (
-                <h3 className="text-orange-400">You have no lists</h3>
-              )}
-              {lists?.map(
-                ({ id, name, active, _count: { items: itemsCount } }) => (
-                  <List
-                    key={id}
-                    id={id}
-                    name={name}
-                    active={active}
-                    itemsCount={itemsCount}
-                  />
-                )
-              )}
-            </div>
-            <div className="mt-8 md:w-full lg:w-1/2">
-              <CreateList />
-            </div>
-          </>
-        )}
-      </Layout>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <h2 className="mb-4">Here are your lists</h2>
+          <ListWrapper>
+            {lists?.length === 0 && (
+              <h3 className="text-orange-400">You have no lists</h3>
+            )}
+            {lists?.map(
+              ({ id, name, active, _count: { items: itemsCount } }) => (
+                <List
+                  key={id}
+                  id={id}
+                  name={name}
+                  active={active}
+                  itemsCount={itemsCount}
+                />
+              )
+            )}
+          </ListWrapper>
+          <div className="mt-8 md:w-full lg:w-1/2">
+            <CreateList />
+          </div>
+        </>
+      )}
     </>
   );
 };

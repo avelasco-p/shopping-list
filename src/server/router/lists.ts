@@ -12,7 +12,7 @@ export const listsRouter = createRouter()
         select: {
           id: true,
           name: true,
-          items: { select: { id: true, name: true } },
+          items: { select: { id: true, name: true, price: true } },
         },
       });
     },
